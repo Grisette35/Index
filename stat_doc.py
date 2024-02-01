@@ -16,20 +16,6 @@ print(f"The number of documents in the crawled_urls.JSON file is: {len(crawled_u
 
 print(f"The different information we can have from the crawled_urls.JSON: {crawled_urls.columns}")
 
-# Download the NLTK data for French tokenization
-#nltk.download('punkt')
-#nltk.download('maxent_ne_chunker')
-#nltk.download('words')
-
-# Sample French text
-#text_french = "La tokenisation est le processus de découpage du texte en mots ou en sous-mots."
-
-# Tokenize the French text
-#tokens_french = word_tokenize(text_french, language='french')
-
-# Print the tokens
-#print(tokens_french)
-
 def word_tokenize_fr(text):
     return [token.lower() for token in word_tokenize(text,language='french')]
 
