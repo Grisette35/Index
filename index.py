@@ -77,6 +77,9 @@ class Index:
         stemmer = SnowballStemmer('french')
         field_index = defaultdict(list)
         field_index_stem = defaultdict(list)
+
+        field_index_pos = defaultdict(lambda: defaultdict(defaultdict))
+
         # Tokenize and create the index
         for doc, entry in enumerate(data):
             field_tokens = self.word_tokenize_fr(entry[column_to_index])
@@ -90,16 +93,28 @@ class Index:
             for token in field_tokens:
                 if doc not in field_index[token]:
                     field_index[token].append(doc)
+                    field_index_pos[token][doc]['positions']=[]
+                    field_index_pos[token][doc]['count']=0
+                field_index_pos[token][doc]['positions'].append(field_tokens.index(token))
+                field_tokens[field_tokens.index(token)]=None
+                field_index_pos[token][doc]['count']+=1
 
         
         # Convert defaultdict to a regular dictionary
         field_index_dict = dict(field_index)
+        field_index_pos_dict=dict(field_index_pos)
 
         # Save the index to a JSON file
         with open(column_to_index+'.non_pos_index.json', 'w') as index_file:
             json.dump(field_index_dict, index_file, indent=None)#, separators=(",\n",": "))
         
         print(f"Index for {column_to_index} created in {column_to_index}.non_pos_index.json")
+
+        # Save the index to a JSON file
+        with open(column_to_index+'._pos_index.json', 'w') as index_file:
+            json.dump(field_index_pos_dict, index_file, indent=None)#, separators=(",\n",": "))
+        
+        print(f"Index for {column_to_index} created in {column_to_index}._pos_index.json")
         
         if stem_index:
             # Convert defaultdict to a regular dictionary
@@ -124,5 +139,5 @@ class Index:
 
 if __name__=="__main__":
     index= Index("crawled_urls.json", ['title', 'content', 'h1'], ['title', 'content'])
-    index.create_metadata()
+    #index.create_metadata()
     index.create_index(False, True)
