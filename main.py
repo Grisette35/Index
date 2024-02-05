@@ -41,18 +41,18 @@ def main():
     # Parse command-line arguments
     args = parse_args()
 
-    # Saving the time when the crawler starts
+    # Saving the time when the algoirthm starts
     t0=time.time()
-
-    # Saving the time the crawler ends
-    t1=time.time()
-
-    # Printing the time taken by the crawler to crawl
-    print(f"time taken to crawl: {t1-t0}")
 
     index= Index(args.json_file, args.columns_to_index, args.index_for_content, args.stem_index)
     index.create_metadata()
     index.create_index(False, True)
+
+    # Saving the time the algorithm ends
+    t1=time.time()
+
+    # Printing the time taken by the algorithm to create the indexes
+    print(f"time taken to crawl: {t1-t0}")
 
 
 if __name__ == "__main__":

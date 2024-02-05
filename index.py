@@ -163,8 +163,3 @@ class Index:
                 json.dump(field_index_stem_dict, index_file, indent=None)
                 
             print(f"Index for {column_to_index} stemmed created in mon_stemmer.{column_to_index}.non_pos_index.json")
-
-if __name__=="__main__":
-    index= Index("crawled_urls.json", ['title', 'content', 'h1'])
-    #index.create_metadata()
-    index.create_index(False, False)
