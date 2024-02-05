@@ -9,17 +9,31 @@ def parse_args():
     Returns:
     - argparse.Namespace: Parsed command-line arguments.
     """
-    parser = argparse.ArgumentParser(description="Web Crawler")
+    parser = argparse.ArgumentParser(description="Creation of different indexes")
     parser.add_argument(
-        "seed_url",
+        "json_file",
         type=str,
-        help="The seed URL to start crawling from."
+        help="The json file that contains the crawled webpages."
     )
     parser.add_argument(
-        "--max_urls",
-        type=int,
-        default=100,
-        help="Maximum number of URLs to crawl. Default is 100."
+        "columns_to_index",
+        type=list,
+        help="The information that should be used to create the indexes and the metadata file. \
+            Usually they are the 'title', the 'content' and 'h1'."
+    )
+    parser.add_argument(
+        "--index_for_content",
+        type=bool,
+        default=False,
+        help="Needs to be specified to know if an index should be created for the 'content'. \
+        With this value set to be true, the algorithm is taking longer to run."
+    )
+    parser.add_argument(
+        "--stem_index",
+        type=bool,
+        default=False,
+        help="Needs to be specified if an index with the stems is wanted, in addition to the token index.\
+            Might take longer if the value is set to True"
     )
     return parser.parse_args()
 
@@ -29,28 +43,17 @@ def main():
 
     # Saving the time when the crawler starts
     t0=time.time()
-    
-    # Initialize database
-    crawler_db = Crawler_db()
-    conn, cursor = crawler_db.create_conn()
-    crawler_db.initialize_database(conn, cursor)
-
-    # Create a Crawler object with user-specified parameters
-    crawler = Crawler(seed_url=args.seed_url, conn=conn, cursor=cursor, max_urls=args.max_urls)
-
-    # Start crawling
-    crawler.crawl()
-
-    crawler.write_downloaded()
-
-    # Close the database connection
-    crawler_db.close_conn(conn)
 
     # Saving the time the crawler ends
     t1=time.time()
 
     # Printing the time taken by the crawler to crawl
     print(f"time taken to crawl: {t1-t0}")
+
+    index= Index(args.json_file, args.columns_to_index, args.index_for_content, args.stem_index)
+    index.create_metadata()
+    index.create_index(False, True)
+
 
 if __name__ == "__main__":
     main()
