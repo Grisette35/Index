@@ -1,5 +1,6 @@
 import argparse
 import time
+import json
 from index import Index
 
 def parse_args():
@@ -17,7 +18,7 @@ def parse_args():
     )
     parser.add_argument(
         "columns_to_index",
-        type=list,
+        type=str,
         help="The information that should be used to create the indexes and the metadata file. \
             Usually they are the 'title', the 'content' and 'h1'."
     )
@@ -41,12 +42,15 @@ def main():
     # Parse command-line arguments
     args = parse_args()
 
+    # Converting the type of one of the argument into a list
+    columns_to_index_list = json.loads(args.columns_to_index)
+
     # Saving the time when the algoirthm starts
     t0=time.time()
 
-    index= Index(args.json_file, args.columns_to_index, args.index_for_content, args.stem_index)
+    index= Index(args.json_file, columns_to_index_list)
     index.create_metadata()
-    index.create_index(False, True)
+    index.create_index(args.index_for_content, args.stem_index)
 
     # Saving the time the algorithm ends
     t1=time.time()
