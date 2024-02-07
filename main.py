@@ -20,7 +20,8 @@ def parse_args():
         "columns_to_index",
         type=str,
         help="The information that should be used to create the indexes and the metadata file. \
-            Usually they are the 'title', the 'content' and 'h1'."
+            Usually they are the 'title', the 'content' and 'h1'. \
+            They are all contained in the same string, separated by spaces"
     )
     parser.add_argument(
         "--index_for_content",
@@ -43,7 +44,7 @@ def main():
     args = parse_args()
 
     # Converting the type of one of the argument into a list
-    columns_to_index_list = json.loads(args.columns_to_index)
+    columns_to_index_list = str.split(args.columns_to_index)
 
     # Saving the time when the algoirthm starts
     t0=time.time()
