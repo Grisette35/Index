@@ -25,14 +25,14 @@ def parse_args():
     )
     parser.add_argument(
         "--index_for_content",
-        type=bool,
+        action='store_true',
         default=False,
         help="Needs to be specified to know if an index should be created for the 'content'. \
         With this value set to be true, the algorithm is taking longer to run."
     )
     parser.add_argument(
         "--stem_index",
-        type=bool,
+        action='store_true',
         default=False,
         help="Needs to be specified if an index with the stems is wanted, in addition to the token index.\
             Might take longer if the value is set to True"

@@ -27,10 +27,25 @@ The `main.py` script demonstrates an example of using the index creator using an
 To run the index creator, you can use the following command format:
 
 ```bash
-python main.py "crawled_urls.json" "title content h1" --index_for_content False --stem_index False
+python main.py "crawled_urls.json" "title content h1"
 ```
 
-Replace "crawled_urls.json" with your json file containing the information from the crawled URLS and adjust the other parameters accordingly. Note that it takes longer for the algorithm to finish when the paramaters --index_for_content and --stem_index are set to True.
+Replace "crawled_urls.json" with your json file containing the information from the crawled URLS and adjust the other parameters accordingly. Note that it takes longer for the algorithm to finish when the paramaters --index_for_content and --stem_index are set to True. The command above will give you the positionnal and non-positionnal indexes for the title. If you want the stem_index too, you can write the following command:
+
+```bash
+python main.py "crawled_urls.json" "title content h1" --stem_index
+```
+
+To have the indexes for the content, you can write the following command:
+```bash
+python main.py "crawled_urls.json" "title content h1" --index_for_content
+```
+
+To have the indexes for the title, the content and their stems, you can write the following command:
+```bash
+python main.py "crawled_urls.json" "title content h1" --index_for_content --stem_index
+```
+
 You might need to change the `python` command by `python3`.
 
 For more information on the parameters, you can use the following command:
